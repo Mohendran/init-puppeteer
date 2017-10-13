@@ -1,0 +1,2 @@
+# init-puppeteer
+Puppeteer boilerplate
