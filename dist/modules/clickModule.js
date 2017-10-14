@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clickModule = (selector) => {
+const click = (selector) => {
     const element = document.querySelector(selector);
     if (element === null) {
         throw `cannot click element with selector '${selector}'`;
     }
     element.click();
 };
-//# sourceMappingURL=click.js.map
+exports.clickModule = async (input) => input.page.evaluate(click, input.selector);
+//# sourceMappingURL=clickModule.js.map

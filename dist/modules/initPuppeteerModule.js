@@ -7,8 +7,8 @@ async function initPuppeteerModule(input) {
     const browser = await puppeteer_1.launch(settings);
     const page = await browser.newPage();
     await page.setViewport({
-        height: input.y,
-        width: input.x,
+        height: input.resolution.y,
+        width: input.resolution.x,
     });
     return { browser, page };
 }

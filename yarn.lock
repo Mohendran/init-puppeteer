@@ -1699,7 +1699,7 @@ lodash@^4.14.0, lodash@^4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
-log-fn@*, log-fn@^2.1.0:
+log-fn@*:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/log-fn/-/log-fn-2.1.0.tgz#60249f42812615fc8517f6c82851863deba4155f"
   dependencies:

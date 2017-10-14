@@ -1,6 +1,24 @@
 import { Browser, Page } from 'puppeteer'
 
-export interface IPuppeteer {
+interface IInput{
+  resolution?: IResolution
+  url: string
+  headless: boolean
+}
+
+interface IOutput{
+  page: Page
+  browser: Browser
+  typeModule: TypeFunction
+  clickModule: ClickFunction
+}
+
+interface IInitPuppeteer{
+  input: IInput
+  resolution: IResolution
+}
+
+interface IPuppeteer {
   browser: Browser
   page: Page
 }
@@ -21,18 +39,8 @@ interface ITypeSettings{
   text: string
 }
 
-interface IInput{
-  resolution?: IResolution,
-  url: string
-}
-
 type TypeModule = (input: ITypeModule) => Promise<Array<void>>
-
-interface IOutput{
-  page: Page
-  browser: Browser
-  typeModule: TypeModule
-}
+type ClickModule = (input: IClickModule) => Promise<void>
 
 interface ITypeModule{
   page: Page
@@ -40,4 +48,10 @@ interface ITypeModule{
   selector: string
 }
 
-type TypeFunction = (input: ITypeSettings) => Promise<void>
+interface IClickModule{
+  page: Page
+  selector: string
+}
+
+type TypeFunction = (input: ITypeModule) => Promise<Array<void>>
+type ClickFunction = (input: IClickModule) => Promise<void>

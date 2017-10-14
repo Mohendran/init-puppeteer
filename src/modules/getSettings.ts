@@ -1,6 +1,6 @@
-import { IPuppeteerSettings, IResolution } from '../typings'
+import { IInitPuppeteer, IPuppeteerSettings } from '../typings'
 
-export const getSettings = (input: IResolution): IPuppeteerSettings => {
+export const getSettings = (input: IInitPuppeteer): IPuppeteerSettings => {
   const args = [
     '--no-first-run',
     '--disable-sync',
@@ -9,7 +9,7 @@ export const getSettings = (input: IResolution): IPuppeteerSettings => {
     '--disable-background-networking',
     '--single-process',
     '--ignore-certificate-errors',
-    `--window-size=${input.x},${input.y}`,
+    `--window-size=${input.resolution.x},${input.resolution.y}`,
     '--no-sandbox',
     '--disable-setuid-sandbox',
     '--shm-size=1G',
@@ -18,6 +18,6 @@ export const getSettings = (input: IResolution): IPuppeteerSettings => {
   return {
     args,
     handleSIGINT: false,
-    headless: true,
+    headless: input.input.headless,
   }
 }

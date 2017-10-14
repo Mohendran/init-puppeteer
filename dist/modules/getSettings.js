@@ -9,7 +9,7 @@ exports.getSettings = (input) => {
         '--disable-background-networking',
         '--single-process',
         '--ignore-certificate-errors',
-        `--window-size=${input.x},${input.y}`,
+        `--window-size=${input.resolution.x},${input.resolution.y}`,
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--shm-size=1G',
@@ -17,7 +17,7 @@ exports.getSettings = (input) => {
     return {
         args,
         handleSIGINT: false,
-        headless: true,
+        headless: input.input.headless,
     };
 };
 //# sourceMappingURL=getSettings.js.map
