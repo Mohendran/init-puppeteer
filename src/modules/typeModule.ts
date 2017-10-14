@@ -4,7 +4,7 @@ import {
   split,
 } from 'rambdax'
 
-export const type = async ({ page, text, selector }): Promise<Array<any>> => {
+export const typeModule = async ({ page, text, selector }): Promise<Array<void>> => {
   await page.focus(selector)
 
   const textAsArray: Array<string> = split('', text)

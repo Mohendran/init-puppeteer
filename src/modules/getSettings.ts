@@ -1,3 +1,5 @@
+import { IPuppeteerSettings, IResolution } from '../typings'
+
 export const getSettings = (input: IResolution): IPuppeteerSettings => {
   const args = [
     '--no-first-run',

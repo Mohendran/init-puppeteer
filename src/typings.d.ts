@@ -1,6 +1,8 @@
-interface ICredentials {
-  user: string
-  password: string
+import { Browser, Page } from 'puppeteer'
+
+export interface IPuppeteer {
+  browser: Browser
+  page: Page
 }
 
 interface IResolution {
@@ -20,9 +22,22 @@ interface ITypeSettings{
 }
 
 interface IInput{
-  autoTag?: true
-  tag?: string
-  getLatestTag?: boolean
+  resolution?: IResolution,
+  url: string
+}
+
+type TypeModule = (input: ITypeModule) => Promise<Array<void>>
+
+interface IOutput{
+  page: Page
+  browser: Browser
+  typeModule: TypeModule
+}
+
+interface ITypeModule{
+  page: Page
+  text: string
+  selector: string
 }
 
 type TypeFunction = (input: ITypeSettings) => Promise<void>
