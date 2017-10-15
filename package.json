@@ -6,7 +6,6 @@
   "repository": "git@github.com:selfrefactor/init-puppeteer.git",
   "author": "Dejan Toteff <deyan8284@gmail.com>",
   "license": "GPL-3.0",
-  "typings": "./src/typings.d.ts",
   "scripts": {
     "start": "cd files&&./start.sh"
   },

@@ -3,7 +3,7 @@ import {
   IInitPuppeteer,
   IPuppeteer,
   IPuppeteerSettings,
-} from '../typings'
+} from '../../typings'
 import {getSettings} from './getSettings'
 
 export async function initPuppeteerModule(input: IInitPuppeteer): Promise<IPuppeteer> {

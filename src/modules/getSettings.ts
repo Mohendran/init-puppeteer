@@ -1,4 +1,4 @@
-import { IInitPuppeteer, IPuppeteerSettings } from '../typings'
+import { IInitPuppeteer, IPuppeteerSettings } from '../../typings'
 
 export const getSettings = (input: IInitPuppeteer): IPuppeteerSettings => {
   const args = [

@@ -3,14 +3,14 @@ import {
 } from 'rambdax'
 import { clickModule } from './modules/clickModule'
 
-import * as constants from './modules/constants'
-import { initPuppeteerModule } from './modules/initPuppeteerModule'
-import { typeModule } from './modules/typeModule'
 import {
   IInput,
   IOutput,
   IResolution,
-} from './typings'
+} from '../typings'
+import * as constants from './modules/constants'
+import { initPuppeteerModule } from './modules/initPuppeteerModule'
+import { typeModule } from './modules/typeModule'
 
 export async function initPuppeteer(input: IInput): Promise<IOutput>{
   const resolutionValue: IResolution = { x: 1366, y: 768 }
