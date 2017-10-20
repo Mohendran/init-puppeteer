@@ -8,8 +8,10 @@ const typeModule_1 = require("./modules/typeModule");
 async function initPuppeteer(input) {
     const resolutionValue = { x: 1366, y: 768 };
     const resolution = rambdax_1.defaultTo(resolutionValue, input.resolution);
-    var { browser, page } = await initPuppeteerModule_1.initPuppeteerModule({ input, resolution });
-    await page.goto(input.url, constants.waitForNetwork);
+    const { browser, page } = await initPuppeteerModule_1.initPuppeteerModule({ input, resolution });
+    const condition = input.url === 'about:blank';
+    const wait = condition ? constants.waitAboutBlank : constants.waitForNetwork;
+    await page.goto(input.url, wait);
     return {
         browser,
         clickModule: clickModule_1.clickModule,

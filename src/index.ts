@@ -15,8 +15,13 @@ import { typeModule } from './modules/typeModule'
 export async function initPuppeteer(input: IInput): Promise<IOutput>{
   const resolutionValue: IResolution = { x: 1366, y: 768 }
   const resolution: IResolution = defaultTo(resolutionValue, input.resolution)
-  var { browser, page } = await initPuppeteerModule({input, resolution})
-  await page.goto(input.url, constants.waitForNetwork)
+  const { browser, page } = await initPuppeteerModule({input, resolution})
+
+  const condition = input.url === 'about:blank'
+
+  const wait = condition ? constants.waitAboutBlank : constants.waitForNetwork
+
+  await page.goto(input.url, wait)
 
   return {
     browser,

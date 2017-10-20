@@ -11,11 +11,9 @@
   },
   "private": false,
   "dependencies": {
-    "fs-extra": "^4.0.2",
     "puppeteer": "0.11.0"
   },
   "devDependencies": {
-    "@types/fs-extra": "^4.0.2",
     "@types/jest": "^21.1.2",
     "@types/node": "^8.0.33",
     "@types/puppeteer": "https://github.com/selfrefactor/puppeteer-types#0.4.0",
