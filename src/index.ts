@@ -23,6 +23,8 @@ export async function initPuppeteer(input: IInput): Promise<IOutput>{
 
   await page.goto(input.url, wait)
 
+  page.on('console', console.log)
+
   return {
     browser,
     clickModule,
