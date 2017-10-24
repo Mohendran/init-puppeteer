@@ -12,7 +12,15 @@ import * as constants from './modules/constants'
 import { initPuppeteerModule } from './modules/initPuppeteerModule'
 import { typeModule } from './modules/typeModule'
 
-export async function initPuppeteer(input: IInput): Promise<IOutput>{
+const defaultInput: IInput = {
+  headless: true,
+  url: 'about:blank',
+}
+
+export async function initPuppeteer(
+  inputRaw: IInput|undefined,
+): Promise<IOutput>{
+  const input: IInput = defaultTo(defaultInput, inputRaw)
   const resolutionValue: IResolution = { x: 1366, y: 768 }
   const resolution: IResolution = defaultTo(resolutionValue, input.resolution)
   const { browser, page } = await initPuppeteerModule({input, resolution})
