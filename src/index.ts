@@ -4,25 +4,25 @@ import {
 import { clickModule } from './modules/clickModule'
 
 import {
-  IInput,
-  IOutput,
-  IResolution,
+  InputPuppeteer,
+  OutputPuppeteer,
+  Resolution,
 } from '../typings'
 import * as constants from './modules/constants'
 import { initPuppeteerModule } from './modules/initPuppeteerModule'
 import { typeModule } from './modules/typeModule'
 
-const defaultInput: IInput = {
+const defaultInput: InputPuppeteer = {
   headless: true,
   url: 'about:blank',
 }
+const defaultResolution: Resolution = { x: 1366, y: 768 }
 
 export async function initPuppeteer(
-  inputRaw: IInput|undefined,
-): Promise<IOutput>{
-  const input: IInput = defaultTo(defaultInput, inputRaw)
-  const resolutionValue: IResolution = { x: 1366, y: 768 }
-  const resolution: IResolution = defaultTo(resolutionValue, input.resolution)
+  inputRaw: InputPuppeteer|undefined,
+): Promise<OutputPuppeteer>{
+  const input: InputPuppeteer = defaultTo(defaultInput, inputRaw)
+  const resolution: Resolution = defaultTo(defaultResolution, input.resolution)
   const { browser, page } = await initPuppeteerModule({input, resolution})
 
   const condition = input.url === 'about:blank'

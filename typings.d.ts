@@ -1,40 +1,40 @@
 import { Browser, Page } from 'puppeteer'
 
-interface IInput{
-  resolution?: IResolution
+interface InputPuppeteer{
+  resolution?: Resolution
   url: string
   headless: boolean
 }
 
-interface IOutput{
+interface OutputPuppeteer{
   page: Page
   browser: Browser
   typeModule: TypeFunction
   clickModule: ClickFunction
 }
 
-interface IInitPuppeteer{
-  input: IInput
-  resolution: IResolution
+interface InitPuppeteer{
+  input: InputPuppeteer
+  resolution: Resolution
 }
 
-interface IPuppeteer {
+interface PuppeteerInstance {
   browser: Browser
   page: Page
 }
 
-interface IResolution {
+interface Resolution {
   x: number
   y: number
 }
 
-interface IPuppeteerSettings{
+interface PuppeteerSettings{
   args: Array<string>
   handleSIGINT: false
   headless: boolean
 }
 
-interface ITypeSettings{
+interface TypeSettings{
   selector: string
   text: string
 }

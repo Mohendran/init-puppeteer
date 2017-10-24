@@ -1,6 +1,6 @@
-import { IInitPuppeteer, IPuppeteerSettings } from '../../typings'
+import { InitPuppeteer, PuppeteerSettings } from '../../typings'
 
-export const getSettings = (input: IInitPuppeteer): IPuppeteerSettings => {
+export const getSettings = (input: InitPuppeteer): PuppeteerSettings => {
   const args = [
     '--no-first-run',
     '--disable-sync',
