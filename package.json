@@ -1,40 +1,42 @@
 {
-  "name": "init-puppeteer",
-  "version": "1.0.0",
-  "description": "Puppeteer boilerplate",
-  "main": "dist/index.js",
-  "repository": "git@github.com:selfrefactor/init-puppeteer.git",
-  "author": "Dejan Toteff <deyan8284@gmail.com>",
-  "license": "GPL-3.0",
-  "scripts": {
-    "start": "cd files&&./start.sh"
-  },
-  "private": false,
-  "dependencies": {
-    "puppeteer": "0.11.0",
-    "rambdax": "^0.6.8"
-  },
-  "devDependencies": {
-    "@types/jest": "^21.1.2",
-    "@types/node": "^8.0.33",
-    "@types/puppeteer": "https://github.com/selfrefactor/puppeteer-types#0.4.0",
-    "jest": "^21.2.1",
-    "ts-jest": "^21.1.0",
-    "tslint": "^5.7.0",
-    "typescript": "^2.6.0-dev.20171007",
-    "watch-fn": "^0.6.1"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ]
-  }
+	"name": "init-puppeteer",
+	"version": "0.5.0",
+	"description": "Puppeteer boilerplate",
+	"main": "dist/index.js",
+	"repository": "git@github.com:selfrefactor/init-puppeteer.git",
+	"author": "Dejan Toteff <deyan8284@gmail.com>",
+	"license": "GPL-3.0",
+	"scripts": {
+		"start": "cd files&&./start.sh"
+	},
+	"private": false,
+	"dependencies": {
+		"rambdax": "https://github.com/selfrefactor/rambdax#0.6.8"
+	},
+	"devDependencies": {
+		"@types/jest": "^21.1.2",
+		"@types/node": "^8.0.33",
+		"jest": "^21.2.1",
+		"ts-jest": "https://github.com/kulshekhar/ts-jest#21.1.0",
+		"tslint": "https://github.com/palantir/tslint#5.7.0",
+		"typescript": "https://github.com/Microsoft/TypeScript#2.6.0",
+		"watch-fn": "^0.6.1"
+	},
+	"jest": {
+		"transform": {
+			"^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+		},
+		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json"
+		]
+	},
+	"peerDependencies": {
+		"@types/puppeteer": "https://github.com/selfrefactor/puppeteer-types#0.4.0",
+		"puppeteer": "https://github.com/GoogleChrome/puppeteer#0.11.0"
+	}
 }
