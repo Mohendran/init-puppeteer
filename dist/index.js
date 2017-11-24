@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const rambdax_1 = require("rambdax");
 const clickModule_1 = require("./modules/clickModule");
-const constants = require("./modules/constants");
+const constants = require("./constants");
 const initPuppeteerModule_1 = require("./modules/initPuppeteerModule");
 const typeModule_1 = require("./modules/typeModule");
 const defaultInput = {

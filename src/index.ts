@@ -8,7 +8,7 @@ import {
   OutputPuppeteer,
   Resolution,
 } from '../typings'
-import * as constants from './modules/constants'
+import * as constants from './constants'
 import { initPuppeteerModule } from './modules/initPuppeteerModule'
 import { typeModule } from './modules/typeModule'
 
@@ -16,6 +16,7 @@ const defaultInput: InputPuppeteer = {
   headless: true,
   url: 'about:blank',
 }
+
 const defaultResolution: Resolution = { x: 1366, y: 768 }
 
 export async function initPuppeteer(

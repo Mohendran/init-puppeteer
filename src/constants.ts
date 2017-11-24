@@ -5,7 +5,7 @@ const SHORT_TIMEOUT = 100
 
 export const waitForNetwork: NavigationOptions = {
   timeout: TIMEOUT,
-  waitUntil: 'networkidle',
+  waitUntil: 'networkidle0',
 }
 
 export const waitAboutBlank: NavigationOptions = {
