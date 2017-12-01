@@ -2,8 +2,8 @@ import { Browser, Page } from 'puppeteer'
 
 interface InputPuppeteer{
   resolution?: Resolution
-  url: string
-  headless: boolean
+  url?: string
+  headless?: boolean
 }
 
 interface OutputPuppeteer{

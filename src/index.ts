@@ -12,33 +12,50 @@ import * as constants from './constants'
 import { initPuppeteerModule } from './modules/initPuppeteerModule'
 import { typeModule } from './modules/typeModule'
 
-const defaultInput: InputPuppeteer = {
-  headless: true,
-  url: 'about:blank',
-}
-
+const defaultHeadless = true
+const defaultURL = 'about:blank'
 const defaultResolution: Resolution = { x: 1366, y: 768 }
+
+const defaultInput: InputPuppeteer = {
+  headless: defaultHeadless,
+  resolution: defaultResolution,
+  url: defaultURL,
+}
 
 export async function initPuppeteer(
   inputRaw: InputPuppeteer|undefined,
 ): Promise<OutputPuppeteer>{
-  const input: InputPuppeteer = defaultTo(defaultInput, inputRaw)
-  const resolution: Resolution = defaultTo(defaultResolution, input.resolution)
-  const { browser, page } = await initPuppeteerModule({input, resolution})
+  try {
+    const inputValue: InputPuppeteer = defaultTo(defaultInput, inputRaw)
 
-  const condition = input.url === 'about:blank'
+    const resolution: Resolution = defaultTo(defaultResolution, inputValue.resolution)
+    const url = defaultTo(defaultURL, inputValue.url)
+    const headless = defaultTo(defaultHeadless, inputValue.headless)
 
-  const wait = condition ? constants.waitAboutBlank : constants.waitForNetwork
+    const input: InputPuppeteer = {
+      headless,
+      resolution,
+      url,
+    }
 
-  await page.goto(input.url, wait)
+    const { browser, page } = await initPuppeteerModule({input, resolution})
 
-  page.on('console', console.log)
+    const wait = input.url === defaultURL ?
+      constants.waitForTimeout :
+      constants.waitForNetwork
 
-  return {
-    browser,
-    clickModule,
-    page,
-    typeModule,
+    await page.goto(input.url, wait)
+
+    page.on('console', console.log)
+
+    return {
+      browser,
+      clickModule,
+      page,
+      typeModule,
+    }
+  } catch (error) {
+    throw error
   }
 }
 

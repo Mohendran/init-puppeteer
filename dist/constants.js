@@ -6,7 +6,7 @@ exports.waitForNetwork = {
     timeout: exports.TIMEOUT,
     waitUntil: 'networkidle0',
 };
-exports.waitAboutBlank = {
+exports.waitForTimeout = {
     timeout: SHORT_TIMEOUT,
 };
 exports.waitForLoad = {
