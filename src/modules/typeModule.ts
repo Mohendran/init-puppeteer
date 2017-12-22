@@ -3,7 +3,7 @@ import {
   mapAsync,
   split,
 } from 'rambdax'
-import {TypeFunction} from '../../typings'
+import { TypeFunction } from '../../typings'
 
 export const typeModule: TypeFunction = async input => {
   await input.page.focus(input.selector)

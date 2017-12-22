@@ -19,8 +19,6 @@ const execCommand = command =>
     proc.stdout.on('error', err => reject(err))
   })
 
-execCommand('rm -rf dist')
-
 const tslintFn = async filePath => {
   if (flag === false) {
     return
@@ -31,13 +29,16 @@ const tslintFn = async filePath => {
   log(`Tslint command over ${ filePath } is completed`, 'info')
 }
 
-const typescriptFn = async filePath => {
-  await execCommand('tsc -p .')
-  log('Typescript build is completed', 'info')
+const tsFormatFn = async filePath => {
+  log('Start tsFormatFn', 'info')
+  await execCommand(`tsfmt -r ${ filePath }`)
+  log('tsFormatFn is completed', 'info')
   log('sep')
 }
 
+
 const typeCheckFn = async filePath => {
+  log('Start type check', 'info')  
   await execCommand('tslint --type-check --project tsconfig.json')
   flag = true
   log('sep')
@@ -47,7 +48,7 @@ const options = {
   commands : {
     ts : [
       tslintFn,
-      typescriptFn,
+      tsFormatFn,
       typeCheckFn,
     ],
   },

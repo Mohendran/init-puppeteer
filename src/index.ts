@@ -8,12 +8,14 @@ import {
   OutputPuppeteer,
   Resolution,
 } from '../typings'
-import * as constants from './constants'
-import { initPuppeteerModule } from './modules/initPuppeteerModule'
+import { init } from './modules/init'
 import { typeModule } from './modules/typeModule'
+import { NavigationOptions } from 'puppeteer';
+import * as common from './common'
 
 const defaultHeadless = true
 const defaultURL = 'about:blank'
+const webpackURL = 'http://localhost:8080'
 const defaultResolution: Resolution = { x: 1366, y: 768 }
 
 const defaultInput: InputPuppeteer = {
@@ -22,9 +24,20 @@ const defaultInput: InputPuppeteer = {
   url: defaultURL,
 }
 
+function getWait(url: string): NavigationOptions {
+  switch (url) {
+    case defaultURL:
+      return common.waitForTimeout(common.SHORT_TIMEOUT)
+    case webpackURL:
+      return common.waitForTimeout(common.TIMEOUT)
+    default:
+      return common.waitForNetwork
+  }
+}
+
 export async function initPuppeteer(
-  inputRaw: InputPuppeteer|undefined,
-): Promise<OutputPuppeteer>{
+  inputRaw: InputPuppeteer | undefined,
+): Promise<OutputPuppeteer> {
   try {
     const inputValue: InputPuppeteer = defaultTo(defaultInput, inputRaw)
 
@@ -38,11 +51,9 @@ export async function initPuppeteer(
       url,
     }
 
-    const { browser, page } = await initPuppeteerModule({input, resolution})
+    const { browser, page } = await init({ input, resolution })
 
-    const wait = input.url === defaultURL ?
-      constants.waitForTimeout :
-      constants.waitForNetwork
+    const wait = getWait(input.url)
 
     await page.goto(input.url, wait)
 
@@ -59,5 +70,9 @@ export async function initPuppeteer(
   }
 }
 
-export const waitForLoad = constants.waitForLoad
-export const waitForNetwork = constants.waitForLoad
+export const waitForLoad = common.waitForLoad
+export const waitForTimeout = common.waitForTimeout
+export const waitForNetwork = common.waitForLoad
+export const LONG_TIMEOUT = common.LONG_TIMEOUT
+export const SHORT_TIMEOUT = common.SHORT_TIMEOUT
+export const TIMEOUT = common.TIMEOUT

@@ -1,4 +1,4 @@
-import {ClickFunction} from '../../typings'
+import { ClickFunction } from '../../typings'
 
 const click = (selector: string): void => {
   const element = document.querySelector(selector) as HTMLElement

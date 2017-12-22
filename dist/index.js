@@ -2,17 +2,28 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const rambdax_1 = require("rambdax");
 const clickModule_1 = require("./modules/clickModule");
-const constants = require("./constants");
-const initPuppeteerModule_1 = require("./modules/initPuppeteerModule");
+const init_1 = require("./modules/init");
 const typeModule_1 = require("./modules/typeModule");
+const common = require("./common");
 const defaultHeadless = true;
 const defaultURL = 'about:blank';
+const webpackURL = 'http://localhost:8080';
 const defaultResolution = { x: 1366, y: 768 };
 const defaultInput = {
     headless: defaultHeadless,
     resolution: defaultResolution,
     url: defaultURL,
 };
+function getWait(url) {
+    switch (url) {
+        case defaultURL:
+            return common.waitForTimeout(common.SHORT_TIMEOUT);
+        case webpackURL:
+            return common.waitForTimeout(common.TIMEOUT);
+        default:
+            return common.waitForNetwork;
+    }
+}
 async function initPuppeteer(inputRaw) {
     try {
         const inputValue = rambdax_1.defaultTo(defaultInput, inputRaw);
@@ -24,10 +35,8 @@ async function initPuppeteer(inputRaw) {
             resolution,
             url,
         };
-        const { browser, page } = await initPuppeteerModule_1.initPuppeteerModule({ input, resolution });
-        const wait = input.url === defaultURL ?
-            constants.waitForTimeout :
-            constants.waitForNetwork;
+        const { browser, page } = await init_1.init({ input, resolution });
+        const wait = getWait(input.url);
         await page.goto(input.url, wait);
         page.on('console', console.log);
         return {
@@ -42,6 +51,7 @@ async function initPuppeteer(inputRaw) {
     }
 }
 exports.initPuppeteer = initPuppeteer;
-exports.waitForLoad = constants.waitForLoad;
-exports.waitForNetwork = constants.waitForLoad;
+exports.waitForLoad = common.waitForLoad;
+exports.waitForTimeout = common.waitForTimeout;
+exports.waitForNetwork = common.waitForLoad;
 //# sourceMappingURL=index.js.map
