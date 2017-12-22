@@ -1,13 +1,13 @@
 {
 	"name": "init-puppeteer",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"description": "Puppeteer boilerplate",
 	"main": "./dist/index.js",
 	"repository": "git@github.com:selfrefactor/init-puppeteer.git",
 	"author": "Dejan Toteff <deyan8284@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"start": "cd files&&./start.sh"
+		"build": "tsc -p ."
 	},
 	"private": false,
 	"dependencies": {
