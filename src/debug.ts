@@ -5,17 +5,21 @@ const WEBPACK = 'http://localhost:8080'
 const ILEARNSMARTER = 'https://ilearnsmarter.com/'
 
 async function debug() {
-  console.time('x')
-  const { browser, page } = await initPuppeteer({
-    headless: false,
-    url: ILEARNSMARTER,
-    waitCondition: {
-      timeout: 180000,
-      waitUntil: 'networkidle2',
-    },
-  })
-  console.timeEnd('x')
-  let x
+  try {
+
+    const { browser, page } = await initPuppeteer({
+      headless: false,
+      url: ILEARNSMARTER,
+      waitCondition: {
+        timeout: 1800,
+        waitUntil: 'networkidle0',
+      },
+    })
+    let x
+  } catch (e) {
+    console.log(e)
+
+  }
 }
 
 debug()

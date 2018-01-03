@@ -49,7 +49,7 @@ async function initPuppeteer(inputRaw) {
             url,
             waitCondition,
         };
-        const { browser, page } = await init_1.init({ input, resolution });
+        var { browser, page } = await init_1.init({ input, resolution });
         const wait = getWait(input.url, input.waitCondition);
         await page.goto(input.url, wait);
         page.on('console', console.log);
@@ -61,6 +61,16 @@ async function initPuppeteer(inputRaw) {
         };
     }
     catch (error) {
+        if (page !== undefined && page.close !== undefined) {
+            const screenshotPath = `${__dirname}/${Date.now()}.png`;
+            await page.screenshot({
+                fullPage: true,
+                path: screenshotPath,
+            });
+            console.log('screenshotPath', screenshotPath);
+            error.screen = screenshotPath;
+            await browser.close();
+        }
         throw error;
     }
 }

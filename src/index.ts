@@ -71,7 +71,7 @@ export async function initPuppeteer(
       waitCondition,
     }
 
-    const { browser, page } = await init({ input, resolution })
+    var { browser, page } = await init({ input, resolution })
 
     const wait = getWait(input.url, input.waitCondition)
 
@@ -86,6 +86,19 @@ export async function initPuppeteer(
       typeModule,
     }
   } catch (error) {
+    if (page !== undefined && page.close !== undefined) {
+
+      const screenshotPath = `${__dirname}/${Date.now()}.png`
+      await page.screenshot({
+        fullPage: true,
+        path: screenshotPath,
+      })
+      console.log('screenshotPath', screenshotPath)
+      error.screen = screenshotPath
+
+      await browser.close()
+    }
+
     throw error
   }
 }
