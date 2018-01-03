@@ -1,17 +1,18 @@
-import {
-  defaultTo,
-} from 'rambdax'
+import { defaultTo } from 'rambdax'
 import { clickModule } from './modules/clickModule'
 
+import { NavigationOptions } from 'puppeteer'
 import {
+  ConditionMap,
+  GetWaitCondition,
   InputPuppeteer,
   OutputPuppeteer,
   Resolution,
+  WaitConditions,
 } from '../typings'
+import * as common from './common'
 import { init } from './modules/init'
 import { typeModule } from './modules/typeModule'
-import { NavigationOptions } from 'puppeteer';
-import * as common from './common'
 
 const defaultHeadless = true
 const defaultURL = 'about:blank'
@@ -24,15 +25,32 @@ const defaultInput: InputPuppeteer = {
   url: defaultURL,
 }
 
-function getWait(url: string): NavigationOptions {
-  switch (url) {
-    case defaultURL:
-      return common.waitForTimeout(common.SHORT_TIMEOUT)
-    case webpackURL:
-      return common.waitForTimeout(common.TIMEOUT)
-    default:
-      return common.waitForNetwork
+function getWait(url: string, waitCondition?: WaitConditions): NavigationOptions {
+  const urlFlag: false | NavigationOptions = url === defaultURL ?
+    common.waitForTimeout(common.SHORT_TIMEOUT) :
+    url === webpackURL ?
+      common.waitForTimeout(common.TIMEOUT) :
+      false
+
+  if (urlFlag === false && waitCondition === undefined) {
+    return common.waitForNetwork
   }
+
+  if (typeof waitCondition === 'string') {
+    const conditionMap: ConditionMap = {
+      DOM: 'domcontentloaded',
+      LOAD: 'load',
+      NETWORK: 'networkidle0',
+    }
+
+    const condition: GetWaitCondition = conditionMap[waitCondition] === undefined ?
+      'load' :
+      conditionMap[waitCondition]
+
+    return common.getWaitCondition(condition)
+  }
+
+  return waitCondition
 }
 
 export async function initPuppeteer(
@@ -44,16 +62,18 @@ export async function initPuppeteer(
     const resolution: Resolution = defaultTo(defaultResolution, inputValue.resolution)
     const url = defaultTo(defaultURL, inputValue.url)
     const headless = defaultTo(defaultHeadless, inputValue.headless)
+    const waitCondition = inputRaw.waitCondition
 
     const input: InputPuppeteer = {
       headless,
       resolution,
       url,
+      waitCondition,
     }
 
     const { browser, page } = await init({ input, resolution })
 
-    const wait = getWait(input.url)
+    const wait = getWait(input.url, input.waitCondition)
 
     await page.goto(input.url, wait)
 
@@ -70,9 +90,8 @@ export async function initPuppeteer(
   }
 }
 
-export const waitForLoad = common.waitForLoad
 export const waitForTimeout = common.waitForTimeout
-export const waitForNetwork = common.waitForLoad
+export const waitForNetwork = common.waitForNetwork
 export const LONG_TIMEOUT = common.LONG_TIMEOUT
 export const SHORT_TIMEOUT = common.SHORT_TIMEOUT
 export const TIMEOUT = common.TIMEOUT

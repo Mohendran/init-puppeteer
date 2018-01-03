@@ -1,13 +1,12 @@
-import { initPuppeteer } from '../src/'
 import { delay } from 'rambdax'
+import { initPuppeteer } from '../src/'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000
 
 test('', async () => {
-  let b
   const {browser, page} = await initPuppeteer({
-    headless:false,
-    url: 'http://localhost:8080',
+    headless: false,
+    url: 'https://github.com/selfrefactor/',
   })
   let a
   expect(

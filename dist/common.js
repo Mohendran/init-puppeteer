@@ -1,17 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LONG_TIMEOUT = 50000;
+exports.LONG_TIMEOUT = 60000;
 exports.TIMEOUT = 5000;
 exports.SHORT_TIMEOUT = 100;
 exports.waitForNetwork = {
-    timeout: exports.TIMEOUT,
+    timeout: exports.LONG_TIMEOUT,
     waitUntil: 'networkidle0',
 };
+exports.getWaitCondition = (condition) => ({
+    timeout: exports.LONG_TIMEOUT,
+    waitUntil: condition,
+});
 exports.waitForTimeout = (ms) => ({
     timeout: ms,
+    waitUntil: 'networkidle0',
 });
-exports.waitForLoad = {
-    timeout: exports.TIMEOUT,
-    waitUntil: 'load',
-};
 //# sourceMappingURL=common.js.map

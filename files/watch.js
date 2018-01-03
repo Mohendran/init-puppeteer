@@ -1,7 +1,7 @@
-const log = require('log-fn')
+const {log} = require('log')
 const path = require('path')
 const watchFn = require('watch-fn')
-const { exec, spawn } = require('child_process')
+const { exec } = require('child_process')
 
 const projectDirectory = path.resolve(__dirname, '../')
 

@@ -1,9 +1,21 @@
-import { Browser, Page } from 'puppeteer'
+import { Browser, Page, NavigationOptions } from 'puppeteer'
+
+type GetWaitCondition = 'load' | 'domcontentloaded' | 'networkidle0'
+
+type WaitConditions = 'LOAD' | 
+  'NETWORK' | 
+  'DOM' |
+  NavigationOptions
+
+interface ConditionMap{
+  [key: string]: GetWaitCondition
+}  
 
 interface InputPuppeteer{
   resolution?: Resolution
   url?: string
   headless?: boolean
+  waitCondition?: WaitConditions
 }
 
 interface OutputPuppeteer{

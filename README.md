@@ -50,3 +50,9 @@ async function fn(): Promise<void>{
   }
 }
 ```
+
+## input.waitCondition
+
+Could be a string among `LOAD, NETWORK, DOM`. In this case timeout is 60 seconds.
+
+It can be also Puppeteer's `NavigationOptions` in which case `input.waitCondition` will passed directly to `page.goto`.
