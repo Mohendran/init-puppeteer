@@ -39,6 +39,6 @@
 	},
 	"peerDependencies": {
 		"@types/puppeteer": "^0.13.9",
-		"puppeteer": "^0.13.0"
+		"puppeteer": "^1.0.0-rc"
 	}
 }
