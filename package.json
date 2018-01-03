@@ -11,18 +11,18 @@
 	},
 	"private": false,
 	"dependencies": {
-		"rambdax": "^0.8.1"
+		"rambdax": "^0.8.2"
 	},
 	"devDependencies": {
-		"@types/jest": "^21.1.9",
+		"@types/jest": "^22.0.0",
 		"@types/node": "^8.5.2",
 		"@types/puppeteer": "^0.13.9",
-		"jest": "^22.0.3",
-		"puppeteer": "^0.13.0",
+		"jest": "^22.0.4",
+		"puppeteer": "^1.0.0-rc",
 		"ts-jest": "^22.0.0",
 		"tslint": "^5.8.0",
 		"typescript": "^2.7.0-insiders.20171214",
-		"watch-fn": "^0.6.1"
+		"watch-fn": "https://github.com/selfrefactor/watch-fn#0.7.0"
 	},
 	"jest": {
 		"transform": {
