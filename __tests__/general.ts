@@ -8,8 +8,7 @@ test('', async () => {
     headless: false,
     url: 'https://github.com/selfrefactor/',
   })
-  let a
-  expect(
-    1
-  ).toBeTruthy()
+  expect(true).toBeTruthy()
+  await browser.close()
+  expect(true).toBeTruthy()
 })
