@@ -4,22 +4,23 @@ const GITHUB = 'https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.m
 const WEBPACK = 'http://localhost:8080'
 const ILEARNSMARTER = 'https://ilearnsmarter.com/'
 
-async function debug() {
+void async function debug() {
   try {
 
     const { browser, page } = await initPuppeteer({
       headless: false,
-      url: ILEARNSMARTER,
+      url: GITHUB,
       waitCondition: {
-        timeout: 1800,
-        waitUntil: 'networkidle0',
+        timeout: 5800,
+        waitUntil: 'networkidle2',
       },
     })
+    await page.keyboard.down('ArrowUp')
+    await browser.close()
     let x
   } catch (e) {
     console.log(e)
 
   }
-}
+}()
 
-debug()
