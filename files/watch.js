@@ -21,45 +21,46 @@ const execCommand = command =>
 
 execCommand('rm -rf dist')
 
+const tsBuildFn = async () => {
+  await execCommand('yarn build')
+  log('Typescript build ready', 'info')
+}
+
 const tslintFn = async filePath => {
-  if (flag === false) {
+  await execCommand(`yarn lint ${ filePath } --fix`)
+  log(`Tslint ${ filePath } ready`, 'info')
+}
+
+
+const tsFormatFn = async filePath => {
+  await execCommand(`yarn format -r ${ filePath }`)
+  log('tsFormatFn ready', 'info')
+}
+
+const typeCheckFn = async () => {
+  await execCommand('yarn lint --type-check --project tsconfig.json')
+  log('Typecheck ready','success')
+}
+
+async function tsCommand(filePath){
+  if(flag === false){
+    
     return
   }
   flag = false
-  log('sep')
-  await execCommand(`tslint ${ filePath } --fix`)
-  log(`Tslint command over ${ filePath } is completed`, 'info')
-}
-
-const typescriptFn = async filePath => {
-  await execCommand('tsc -p .')
-  log('Typescript build is completed', 'info')
-  log('sep')
-}
-
-const tsFormatFn = async filePath => {
-  log('Start tsFormatFn', 'info')
-  await execCommand(`tsfmt -r ${ filePath }`)
-  log('tsFormatFn is completed', 'info')
-  log('sep')
-}
-
-
-const typeCheckFn = async filePath => {
-  log('Start type check', 'info')  
-  await execCommand('tslint --type-check --project tsconfig.json')
+  await tslintFn(filePath)
+  await Promise.all([
+    tsBuildFn(filePath),
+    tsFormatFn(filePath),
+    typeCheckFn(filePath)
+  ])
   flag = true
-  log('sep')
+  log('','sepx')
 }
 
 const options = {
   commands : {
-    ts : [
-      tslintFn,
-      tsFormatFn,
-      typescriptFn,
-      typeCheckFn,
-    ],
+    ts : tsCommand,
   },
   directory : `${ projectDirectory }/src`,
   cwd       : projectDirectory,

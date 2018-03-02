@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const client_helpers_1 = require("client-helpers");
 const rambdax_1 = require("rambdax");
 const clickModule_1 = require("./modules/clickModule");
 const common = require("./common");
@@ -13,6 +14,7 @@ const defaultInput = {
     headless: defaultHeadless,
     resolution: defaultResolution,
     url: defaultURL,
+    waitCondition: common.waitForNetwork,
 };
 function getWait(url, waitCondition) {
     const urlFlag = url === defaultURL ?
@@ -29,7 +31,8 @@ function getWait(url, waitCondition) {
             LOAD: 'load',
             NETWORK: 'networkidle0',
         };
-        const condition = conditionMap[waitCondition] === undefined ?
+        const answer = conditionMap[waitCondition] === undefined;
+        const condition = answer ?
             'load' :
             conditionMap[waitCondition];
         return common.getWaitCondition(condition);
@@ -38,22 +41,19 @@ function getWait(url, waitCondition) {
 }
 async function initPuppeteer(inputRaw) {
     try {
-        const inputValue = rambdax_1.defaultTo(defaultInput, inputRaw);
-        const resolution = rambdax_1.defaultTo(defaultResolution, inputValue.resolution);
-        const url = rambdax_1.defaultTo(defaultURL, inputValue.url);
-        const headless = rambdax_1.defaultTo(defaultHeadless, inputValue.headless);
-        const waitCondition = inputRaw.waitCondition;
         const input = {
-            headless,
-            resolution,
-            url,
-            waitCondition,
+            ...defaultInput,
+            ...rambdax_1.defaultTo({}, inputRaw),
         };
-        var { browser, page } = await init_1.init({ input, resolution });
+        var { browser, page } = await init_1.init(input);
         const wait = getWait(input.url, input.waitCondition);
         await page.goto(input.url, wait);
         page.on('console', console.log);
+        const $ = client_helpers_1.dollar(page);
+        const $$ = client_helpers_1.doubleDollar(page);
         return {
+            $,
+            $$,
             browser,
             clickModule: clickModule_1.clickModule,
             page,

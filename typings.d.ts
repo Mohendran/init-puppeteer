@@ -19,15 +19,12 @@ interface InputPuppeteer{
 }
 
 interface OutputPuppeteer{
+  $: (selector: string, fn: string) => Promise<any>
+  $$: (selector: string, fn: string) => Promise<any>
   page: Page
   browser: Browser
   typeModule: TypeFunction
   clickModule: ClickFunction
-}
-
-interface InitPuppeteer{
-  input: InputPuppeteer
-  resolution: Resolution
 }
 
 interface PuppeteerInstance {

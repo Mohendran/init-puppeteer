@@ -1,6 +1,6 @@
-import { InitPuppeteer, PuppeteerSettings } from '../../typings'
+import { InputPuppeteer, PuppeteerSettings } from '../../typings'
 
-export const getSettings = (input: InitPuppeteer): PuppeteerSettings => {
+export const getSettings = (input: InputPuppeteer): PuppeteerSettings => {
   const args = [
     '--no-first-run',
     '--disable-sync',
@@ -18,6 +18,6 @@ export const getSettings = (input: InitPuppeteer): PuppeteerSettings => {
   return {
     args,
     handleSIGINT: false,
-    headless: input.input.headless,
+    headless: input.headless,
   }
 }

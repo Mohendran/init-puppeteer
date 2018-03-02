@@ -17,7 +17,7 @@ exports.getSettings = (input) => {
     return {
         args,
         handleSIGINT: false,
-        headless: input.input.headless,
+        headless: input.headless,
     };
 };
 //# sourceMappingURL=getSettings.js.map

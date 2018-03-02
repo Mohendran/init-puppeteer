@@ -1,3 +1,4 @@
+import { dollar, doubleDollar } from 'client-helpers'
 import { defaultTo } from 'rambdax'
 import { clickModule } from './modules/clickModule'
 
@@ -23,16 +24,21 @@ const defaultInput: InputPuppeteer = {
   headless: defaultHeadless,
   resolution: defaultResolution,
   url: defaultURL,
+  waitCondition: common.waitForNetwork,
 }
 
-function getWait(url: string, waitCondition?: WaitConditions): NavigationOptions {
-  const urlFlag: false | NavigationOptions = url === defaultURL ?
+function getWait(
+  url: string,
+  waitCondition?: WaitConditions,
+): NavigationOptions {
+  const urlFlag = url === defaultURL ?
     common.waitForTimeout(common.SHORT_TIMEOUT) :
     url === webpackURL ?
       common.waitForTimeout(common.TIMEOUT) :
       false
 
   if (urlFlag === false && waitCondition === undefined) {
+
     return common.waitForNetwork
   }
 
@@ -43,7 +49,9 @@ function getWait(url: string, waitCondition?: WaitConditions): NavigationOptions
       NETWORK: 'networkidle0',
     }
 
-    const condition: GetWaitCondition = conditionMap[waitCondition] === undefined ?
+    const answer = conditionMap[waitCondition] === undefined
+
+    const condition: GetWaitCondition = answer ?
       'load' :
       conditionMap[waitCondition]
 
@@ -57,21 +65,12 @@ export async function initPuppeteer(
   inputRaw: InputPuppeteer | undefined,
 ): Promise<OutputPuppeteer> {
   try {
-    const inputValue: InputPuppeteer = defaultTo(defaultInput, inputRaw)
-
-    const resolution: Resolution = defaultTo(defaultResolution, inputValue.resolution)
-    const url = defaultTo(defaultURL, inputValue.url)
-    const headless = defaultTo(defaultHeadless, inputValue.headless)
-    const waitCondition = inputRaw.waitCondition
-
     const input: InputPuppeteer = {
-      headless,
-      resolution,
-      url,
-      waitCondition,
+      ...defaultInput,
+      ...defaultTo({}, inputRaw),
     }
 
-    var { browser, page } = await init({ input, resolution })
+    var { browser, page } = await init(input)
 
     const wait = getWait(input.url, input.waitCondition)
 
@@ -79,7 +78,12 @@ export async function initPuppeteer(
 
     page.on('console', console.log)
 
+    const $ = dollar(page)
+    const $$ = doubleDollar(page)
+
     return {
+      $,
+      $$,
       browser,
       clickModule,
       page,

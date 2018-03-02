@@ -1,13 +1,13 @@
 import { launch } from 'puppeteer'
 import {
-  InitPuppeteer,
+  InputPuppeteer,
   PuppeteerInstance,
   PuppeteerSettings,
 } from '../../typings'
 import { getSettings } from './getSettings'
 
 export async function init(
-  input: InitPuppeteer,
+  input: InputPuppeteer,
 ): Promise<PuppeteerInstance> {
   try {
     const settings: PuppeteerSettings = getSettings(input)

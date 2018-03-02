@@ -1,5 +1,5 @@
 import { initPuppeteer } from './'
-
+// tslint:disable
 const GITHUB = 'https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md'
 const WEBPACK = 'http://localhost:8080'
 const ILEARNSMARTER = 'https://ilearnsmarter.com/'
@@ -23,4 +23,4 @@ void async function debug() {
 
   }
 }()
-
+// tslint:enable

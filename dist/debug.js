@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require("./");
+// tslint:disable
 const GITHUB = 'https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md';
 const WEBPACK = 'http://localhost:8080';
 const ILEARNSMARTER = 'https://ilearnsmarter.com/';
@@ -22,4 +23,5 @@ void async function debug() {
         console.log(e);
     }
 }();
+// tslint:enable
 //# sourceMappingURL=debug.js.map
