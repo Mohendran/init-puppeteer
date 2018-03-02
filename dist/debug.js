@@ -7,17 +7,13 @@ const WEBPACK = 'http://localhost:8080';
 const ILEARNSMARTER = 'https://ilearnsmarter.com/';
 void async function debug() {
     try {
-        const { browser, page } = await _1.initPuppeteer({
+        const { browser, page, $$ } = await _1.initPuppeteer({
             headless: false,
-            url: GITHUB,
-            waitCondition: {
-                timeout: 5800,
-                waitUntil: 'networkidle2',
-            },
+            url: ILEARNSMARTER,
         });
-        await page.keyboard.down('ArrowUp');
+        // await page.keyboard.down('ArrowUp')
+        const x = await $$('div', 'result = els.length');
         await browser.close();
-        let x;
     }
     catch (e) {
         console.log(e);
