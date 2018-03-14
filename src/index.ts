@@ -1,8 +1,3 @@
-import { dollar, doubleDollar } from 'client-helpers'
-import { defaultTo } from 'rambdax'
-import { clickModule } from './modules/clickModule'
-
-import { NavigationOptions } from 'puppeteer'
 import {
   ConditionMap,
   GetWaitCondition,
@@ -12,17 +7,25 @@ import {
   WaitConditions,
 } from '../typings'
 import * as common from './common'
+
+import { NavigationOptions } from 'puppeteer'
+import { dollar, doubleDollar } from 'client-helpers'
+import { defaultTo } from 'rambdax'
+
+import { clickModule } from './modules/clickModule'
+import { takeScreenshot } from './modules/takeScreenshot'
 import { init } from './modules/init'
 import { typeModule } from './modules/typeModule'
 
-const defaultHeadless = true
 const defaultURL = 'about:blank'
 const webpackURL = 'http://localhost:8080'
 const defaultResolution: Resolution = { x: 1366, y: 768 }
 
 const defaultInput: InputPuppeteer = {
-  headless: defaultHeadless,
+  headless: false,
+  logFlag: false,
   resolution: defaultResolution,
+  screenOnError: 'OFF',
   url: defaultURL,
   waitCondition: common.waitForNetwork,
 }
@@ -65,7 +68,7 @@ export async function initPuppeteer(
   inputRaw: InputPuppeteer | undefined,
 ): Promise<OutputPuppeteer> {
   try {
-    const input: InputPuppeteer = {
+    var input: InputPuppeteer = {
       ...defaultInput,
       ...defaultTo({}, inputRaw),
     }
@@ -76,30 +79,40 @@ export async function initPuppeteer(
 
     await page.goto(input.url, wait)
 
-    page.on('console', console.log)
+    if(input.logFlag){
+      page.on('console', console.log)
+    }
 
     const $ = dollar(page)
     const $$ = doubleDollar(page)
 
+    const catchError = async (e: any) => {
+      if (page !== undefined && page.close !== undefined) {
+        e.screen = await takeScreenshot(
+          page, 
+          input.screenOnError
+        )
+        
+        await browser.close()
+      }
+
+      return e
+    }
+
     return {
-      $,
       $$,
+      $,
       browser,
+      catchError,
       clickModule,
       page,
       typeModule,
     }
   } catch (error) {
     if (page !== undefined && page.close !== undefined) {
-
-      const screenshotPath = `${__dirname}/${Date.now()}.png`
-      await page.screenshot({
-        fullPage: true,
-        path: screenshotPath,
-      })
-      console.log('screenshotPath', screenshotPath)
-      error.screen = screenshotPath
-
+      error.screen = await takeScreenshot(page, input.screenOnError)
+      console.log('screenshotPath', error.screen)
+      
       await browser.close()
     }
 

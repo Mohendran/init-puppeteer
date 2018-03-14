@@ -2,22 +2,33 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = require("./");
 // tslint:disable
-const GITHUB = 'https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md';
+const GITHUB = 'https://github.com';
 const WEBPACK = 'http://localhost:8080';
 const ILEARNSMARTER = 'https://ilearnsmarter.com/';
+function fn(xx) {
+    return xx.length;
+    // return xx.a.b
+}
 void async function debug() {
     try {
-        const { browser, page, $$ } = await _1.initPuppeteer({
+        var { browser, page, $$, catchError } = await _1.initPuppeteer({
             headless: false,
+            logFlag: false,
+            screenOnError: 'CLOUD',
             url: ILEARNSMARTER,
+            waitCondition: {
+                timeout: 5800,
+                waitUntil: 'networkidle2',
+            },
         });
-        // await page.keyboard.down('ArrowUp')
-        const x = await $$('div', 'result = els.length');
+        const x = await $$('div', { fn });
         await browser.close();
     }
     catch (e) {
-        console.log(e);
+        e = await catchError(e);
+        console.log(e.screen);
     }
 }();
 // tslint:enable
+// await page.keyboard.down('ArrowUp')
 //# sourceMappingURL=debug.js.map

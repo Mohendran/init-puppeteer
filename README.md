@@ -4,26 +4,46 @@ It starts a `Puppeteer` instance for you and gives you reference to its `page` a
 
 You can pass `headless`, `url` and `resolution` as settings.
 
-
 ## Install
+
 `yarn add https://github.com/selfrefactor/init-puppeteer#0.6.0`
 
 ## Example
-```
+
+```typescript
 const { initPuppeteer } = require('init-puppeteer')
-async function fn(){
-  const {
-    page,
-    browser
-  } = await initPuppeteer()
-  // WORK
-  await browser.close()
+
+function fn(xx){
+
+  return xx.length
+  // return xx.a.b
 }
+
+void async function debug() {
+  try {
+    var { browser, page, $$, catchError } = await initPuppeteer({
+      headless: false,
+      logFlag: false,
+      screenOnError:'CLOUD',
+      url: ILEARNSMARTER,
+      waitCondition: {
+        timeout: 5800,
+        waitUntil: 'networkidle2',
+      },
+    })
+    const x = await $$('div', {fn})
+
+    await browser.close()
+  } catch (e) {
+    e = await catchError(e)
+    console.log(e.screen)
+  }
+}()
 ```
 
 ## Typescript example
 
-```
+```typescript
 import { initPuppeteer } from 'init-puppeteer'
 import {
   InputPuppeteer,
@@ -56,3 +76,7 @@ async function fn(): Promise<void>{
 Could be a string among `LOAD, NETWORK, DOM`. In this case timeout is 60 seconds.
 
 It can be also Puppeteer's `NavigationOptions` in which case `input.waitCondition` will passed directly to `page.goto`.
+
+## output.catchError
+
+It takes a screenshot and returns its local or Imgur path. Turned off by default

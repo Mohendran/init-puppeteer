@@ -10,19 +10,27 @@ type WaitConditions = 'LOAD' |
 interface ConditionMap{
   [key: string]: GetWaitCondition
 }  
+type ScreenOnError = 'OFF' | 'CLOUD' | 'LOCAL'
 
 interface InputPuppeteer{
   resolution?: Resolution
   url?: string
   headless?: boolean
   waitCondition?: WaitConditions
+  logFlag?: boolean
+  screenOnError?: ScreenOnError 
+}
+
+interface Fn{
+  [key: string]: Function
 }
 
 interface OutputPuppeteer{
-  $: (selector: string, fn: string) => Promise<any>
-  $$: (selector: string, fn: string) => Promise<any>
+  $: (selector: string, fn: string|Fn) => Promise<any>
+  $$: (selector: string, fn: string|Fn) => Promise<any>
   page: Page
   browser: Browser
+  catchError: (e: any) => Promise<any>
   typeModule: TypeFunction
   clickModule: ClickFunction
 }
