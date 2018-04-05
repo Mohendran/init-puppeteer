@@ -22,7 +22,7 @@ const webpackURL = 'http://localhost:8080'
 const defaultResolution: Resolution = { x: 1366, y: 768 }
 
 const defaultInput: InputPuppeteer = {
-  headless: false,
+  headless: true,
   logFlag: false,
   resolution: defaultResolution,
   screenOnError: 'OFF',

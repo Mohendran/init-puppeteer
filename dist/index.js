@@ -11,7 +11,7 @@ const defaultURL = 'about:blank';
 const webpackURL = 'http://localhost:8080';
 const defaultResolution = { x: 1366, y: 768 };
 const defaultInput = {
-    headless: false,
+    headless: true,
     logFlag: false,
     resolution: defaultResolution,
     screenOnError: 'OFF',
