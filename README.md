@@ -1,22 +1,22 @@
 # Init-puppeteer
 
-It starts a `Puppeteer` instance for you and gives you reference to its `page` and `browser` methods. 
-
-You can pass `headless`, `url` and `resolution` as settings.
+It starts a `Puppeteer` instance for you and gives you reference to its `page` and `browser` methods.
 
 ## Install
 
-`yarn add https://github.com/selfrefactor/init-puppeteer#0.6.0`
+`yarn add https://github.com/selfrefactor/init-puppeteer#3.1.0`
+
+For version without `imgur` dependency install the following:
+`yarn add https://github.com/selfrefactor/init-puppeteer#3.0.0`
 
 ## Example
 
 ```typescript
 const { initPuppeteer } = require('init-puppeteer')
 
-function fn(xx){
+function fn(els){
 
-  return xx.length
-  // return xx.a.b
+  return els.length
 }
 
 void async function debug() {
@@ -31,7 +31,7 @@ void async function debug() {
         waitUntil: 'networkidle2',
       },
     })
-    const x = await $$('div', {fn})
+    const numDivs = await $$('div', fn)
 
     await browser.close()
   } catch (e) {
