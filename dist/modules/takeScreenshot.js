@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// import {uploadFile} from 'imgur'
+const fs_1 = require("fs");
+const rambdax_1 = require("rambdax");
+const imgur_1 = require("imgur");
 async function takeScreenshot(page, screenOnError) {
     try {
         if (screenOnError === 'OFF') {
@@ -14,12 +16,9 @@ async function takeScreenshot(page, screenOnError) {
         if (screenOnError === 'LOCAL') {
             return screenshotPath;
         }
-        // const uploadResult = await uploadFile(screenshotPath)
-        // unlinkSync(screenshotPath)
-        // return path(
-        //   'data.link',
-        //   uploadResult
-        // )
+        const uploadResult = await imgur_1.uploadFile(screenshotPath);
+        fs_1.unlinkSync(screenshotPath);
+        return rambdax_1.path('data.link', uploadResult);
     }
     catch (err) {
         throw err;
