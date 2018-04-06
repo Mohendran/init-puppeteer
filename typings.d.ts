@@ -26,8 +26,8 @@ interface Fn{
 }
 
 interface OutputPuppeteer{
-  $: (selector: string, fn: string|Fn) => Promise<any>
-  $$: (selector: string, fn: string|Fn) => Promise<any>
+  $: (selector: string, fn: Function) => Promise<any>
+  $$: (selector: string, fn: Function) => Promise<any>
   page: Page
   browser: Browser
   catchError: (e: any) => Promise<any>

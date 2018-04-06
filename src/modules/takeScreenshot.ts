@@ -2,8 +2,7 @@ import { Page } from 'puppeteer'
 import { ScreenOnError } from '../../typings'
 import { unlinkSync } from 'fs'
 import { path } from 'rambdax'
-import {uploadFile} from 'imgur'
-// import * as imgur from 'imgur'
+// import {uploadFile} from 'imgur'
 
 export async function takeScreenshot(
   page: Page, 
@@ -25,13 +24,13 @@ export async function takeScreenshot(
 
       return screenshotPath
     }
-    const uploadResult = await uploadFile(screenshotPath)
-    unlinkSync(screenshotPath)
+    // const uploadResult = await uploadFile(screenshotPath)
+    // unlinkSync(screenshotPath)
 
-    return path(
-      'data.link',
-      uploadResult
-    )
+    // return path(
+    //   'data.link',
+    //   uploadResult
+    // )
   }catch(err){
     throw err
   }

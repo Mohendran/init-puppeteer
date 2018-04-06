@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const common = require("./common");
-const client_helpers_1 = require("client-helpers");
 const rambdax_1 = require("rambdax");
 const clickModule_1 = require("./modules/clickModule");
 const takeScreenshot_1 = require("./modules/takeScreenshot");
@@ -53,8 +52,6 @@ async function initPuppeteer(inputRaw) {
         if (input.logFlag) {
             page.on('console', console.log);
         }
-        const $ = client_helpers_1.dollar(page);
-        const $$ = client_helpers_1.doubleDollar(page);
         const catchError = async (e) => {
             if (page !== undefined && page.close !== undefined) {
                 e.screen = await takeScreenshot_1.takeScreenshot(page, input.screenOnError);
@@ -62,6 +59,8 @@ async function initPuppeteer(inputRaw) {
             }
             return e;
         };
+        const $ = page.$eval;
+        const $$ = page.$$eval;
         return {
             $$,
             $,

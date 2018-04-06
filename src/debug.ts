@@ -7,7 +7,6 @@ const ILEARNSMARTER = 'https://ilearnsmarter.com/'
 function fn(xx){
 
   return xx.length
-  // return xx.a.b
 }
 
 void async function debug() {
@@ -22,7 +21,7 @@ void async function debug() {
         waitUntil: 'networkidle2',
       },
     })
-    const x = await $$('div', {fn})
+    const x = await $$('div', fn)
     
     await browser.close()
   } catch (e) {

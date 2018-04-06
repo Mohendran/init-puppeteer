@@ -9,7 +9,6 @@ import {
 import * as common from './common'
 
 import { NavigationOptions } from 'puppeteer'
-import { dollar, doubleDollar } from 'client-helpers'
 import { defaultTo } from 'rambdax'
 
 import { clickModule } from './modules/clickModule'
@@ -83,9 +82,6 @@ export async function initPuppeteer(
       page.on('console', console.log)
     }
 
-    const $ = dollar(page)
-    const $$ = doubleDollar(page)
-
     const catchError = async (e: any) => {
       if (page !== undefined && page.close !== undefined) {
         e.screen = await takeScreenshot(
@@ -98,6 +94,9 @@ export async function initPuppeteer(
 
       return e
     }
+
+    const $ = page.$eval
+    const $$ = page.$$eval
 
     return {
       $$,
