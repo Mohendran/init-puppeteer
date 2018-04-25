@@ -40,6 +40,7 @@ function getWait(url, waitCondition) {
     }
     return waitCondition;
 }
+const DELAY = Number(rambdax_1.defaultTo('0', process.env.STEP_DELAY));
 async function initPuppeteer(inputRaw) {
     try {
         var input = {
@@ -59,8 +60,16 @@ async function initPuppeteer(inputRaw) {
             }
             return e;
         };
-        const $ = page.$eval;
-        const $$ = page.$$eval;
+        const $ = async (selector, fn, args) => {
+            const result = await page.$eval(selector, fn, args);
+            await rambdax_1.delay(DELAY);
+            return result;
+        };
+        const $$ = async (selector, fn, args) => {
+            const result = await page.$$eval(selector, fn, args);
+            await rambdax_1.delay(DELAY);
+            return result;
+        };
         return {
             $$,
             $,

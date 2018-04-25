@@ -9,7 +9,7 @@ import {
 import * as common from './common'
 
 import { NavigationOptions } from 'puppeteer'
-import { defaultTo } from 'rambdax'
+import { defaultTo, delay } from 'rambdax'
 
 import { clickModule } from './modules/clickModule'
 import { takeScreenshot } from './modules/takeScreenshot'
@@ -63,6 +63,8 @@ function getWait(
   return waitCondition
 }
 
+const DELAY = Number(defaultTo('0', process.env.STEP_DELAY))
+
 export async function initPuppeteer(
   inputRaw: InputPuppeteer | undefined,
 ): Promise<OutputPuppeteer> {
@@ -95,8 +97,16 @@ export async function initPuppeteer(
       return e
     }
 
-    const $ = page.$eval
-    const $$ = page.$$eval
+    const $ = async (selector, fn, args) => {
+      const result = await page.$eval(selector, fn, args)
+      await delay(DELAY)
+      return result
+    }
+    const $$ = async (selector, fn, args) => {
+      const result = await page.$$eval(selector, fn, args)
+      await delay(DELAY)
+      return result
+    }
 
     return {
       $$,

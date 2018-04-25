@@ -9,6 +9,10 @@ It starts a `Puppeteer` instance for you and gives you reference to its `page` a
 For version without `imgur` dependency install the following:
 `yarn add https://github.com/selfrefactor/init-puppeteer#3.0.0`
 
+## Step delay
+
+Set `process.env.STEP_DELAY=1000` for 1 second delay after each `$` or `$$` evaluation.
+
 ## Example
 
 ```typescript
