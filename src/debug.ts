@@ -4,14 +4,10 @@ const GITHUB = 'https://github.com'
 const WEBPACK = 'http://localhost:8080'
 const ILEARNSMARTER = 'https://ilearnsmarter.com/'
 
-function fn(xx){
-
-  return xx.length
-}
 
 void async function debug() {
   try {
-    var { browser, page, $$, catchError } = await initPuppeteer({
+    var { browser, page, catchError } = await initPuppeteer({
       headless: false,
       logFlag: false,
       screenOnError:'CLOUD',
@@ -21,7 +17,7 @@ void async function debug() {
         waitUntil: 'networkidle2',
       },
     })
-    const x = await $$('div', fn)
+    const x = await page.$$eval('div', els => els.length)
     
     await browser.close()
   } catch (e) {

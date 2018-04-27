@@ -11,10 +11,10 @@ import * as common from './common'
 import { NavigationOptions } from 'puppeteer'
 import { defaultTo, delay } from 'rambdax'
 
-import { clickModule } from './modules/clickModule'
 import { takeScreenshot } from './modules/takeScreenshot'
 import { init } from './modules/init'
-import { typeModule } from './modules/typeModule'
+
+import { attach } from './attach'
 
 const defaultURL = 'about:blank'
 const webpackURL = 'http://localhost:8080'
@@ -97,25 +97,11 @@ export async function initPuppeteer(
       return e
     }
 
-    const $ = async (selector, fn, args) => {
-      const result = await page.$eval(selector, fn, args)
-      await delay(DELAY)
-      return result
-    }
-    const $$ = async (selector, fn, args) => {
-      const result = await page.$$eval(selector, fn, args)
-      await delay(DELAY)
-      return result
-    }
-
     return {
-      $$,
-      $,
+      attach,
       browser,
       catchError,
-      clickModule,
       page,
-      typeModule,
     }
   } catch (error) {
     if (page !== undefined && page.close !== undefined) {

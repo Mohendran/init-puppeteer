@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const common = require("./common");
 const rambdax_1 = require("rambdax");
-const clickModule_1 = require("./modules/clickModule");
 const takeScreenshot_1 = require("./modules/takeScreenshot");
 const init_1 = require("./modules/init");
-const typeModule_1 = require("./modules/typeModule");
+const attach_1 = require("./attach");
 const defaultURL = 'about:blank';
 const webpackURL = 'http://localhost:8080';
 const defaultResolution = { x: 1366, y: 768 };
@@ -60,24 +59,11 @@ async function initPuppeteer(inputRaw) {
             }
             return e;
         };
-        const $ = async (selector, fn, args) => {
-            const result = await page.$eval(selector, fn, args);
-            await rambdax_1.delay(DELAY);
-            return result;
-        };
-        const $$ = async (selector, fn, args) => {
-            const result = await page.$$eval(selector, fn, args);
-            await rambdax_1.delay(DELAY);
-            return result;
-        };
         return {
-            $$,
-            $,
+            attach: attach_1.attach,
             browser,
             catchError,
-            clickModule: clickModule_1.clickModule,
             page,
-            typeModule: typeModule_1.typeModule,
         };
     }
     catch (error) {

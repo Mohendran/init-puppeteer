@@ -25,14 +25,29 @@ interface Fn{
   [key: string]: Function
 }
 
-interface OutputPuppeteer{
+type Attach = (page: Page) => AttachOutput
+
+interface AttachOutput{
   $: (selector: string, fn: Function, args?: string[]) => Promise<any>
   $$: (selector: string, fn: Function, args?: string[]) => Promise<any>
+  click: (selector: string, index?: number|string) => Promise<boolean>
+  clickWithText: (selector: string, text: string) => Promise<boolean>
+  focus: (selector: string) => Promise<boolean>
+  count: (selector: string) => Promise<number>
+  exists: (selector: string) => Promise<boolean>
+  fill(selector: string, text: string): void
+  onError: () => string
+  url: () => Promise<string>
+  selectWithTab: (tabCount: number) => Promise<void>
+  waitFor: (selector: string, count?: number) => Promise<boolean>
+  waitForSelectors: (selectors: string[]) => Promise<boolean>
+}
+
+interface OutputPuppeteer{
+  attach: Attach
   page: Page
   browser: Browser
   catchError: (e: any) => Promise<any>
-  typeModule: TypeFunction
-  clickModule: ClickFunction
 }
 
 interface PuppeteerInstance {
