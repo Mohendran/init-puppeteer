@@ -81,7 +81,7 @@ export async function initPuppeteer(
     await page.goto(input.url, wait)
 
     if(input.logFlag){
-      page.on('console', console.log)
+      page.on('console', log)
     }
 
     const catchError = async (e: any) => {
@@ -112,6 +112,12 @@ export async function initPuppeteer(
     }
 
     throw error
+  }
+}
+
+function log (input) {
+  if (input._type === 'log') {
+    console.log(input._text)
   }
 }
 

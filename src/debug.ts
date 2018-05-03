@@ -4,7 +4,6 @@ const GITHUB = 'https://github.com'
 const WEBPACK = 'http://localhost:8080'
 const ILEARNSMARTER = 'https://ilearnsmarter.com/'
 
-
 void async function debug() {
   try {
     var { browser, page, catchError } = await initPuppeteer({
