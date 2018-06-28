@@ -1,65 +1,75 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const rambdax_1 = require("rambdax");
-const DELAY = Number(process.env.STEP_DELAY || '0');
+const STEP_DELAY = Number(process.env.STEP_DELAY || '0');
+const DELAY = 200;
 function attach(page) {
-    let selectorHolder;
-    let operationHolder;
-    const $ = async (...input) => {
-        selectorHolder = input[0];
-        const result = await page.$eval(...input);
-        await rambdax_1.delay(DELAY);
+    const holder = [];
+    const mark = (operation, selector, additional) => {
+        if (holder.length === 10) {
+            holder.shift();
+        }
+        const x = additional === undefined ?
+            { selector, operation } :
+            { selector, operation, additional };
+        holder.push(x);
+    };
+    const $ = async (selector, fn, ...args) => {
+        mark('$', selector);
+        const result = await page.$eval(selector, fn, ...args);
+        await rambdax_1.delay(STEP_DELAY);
         return result;
     };
-    const $$ = async (...input) => {
-        selectorHolder = input[0];
-        const result = await page.$$eval(...input);
-        await rambdax_1.delay(DELAY);
+    const $$ = async (selector, fn, ...args) => {
+        mark('$$', selector);
+        const result = await page.$$eval(selector, fn, ...args);
+        await rambdax_1.delay(STEP_DELAY);
         return result;
     };
-    const waitFor = async (selector, count = 1) => {
-        selectorHolder = selector;
-        operationHolder = 'waitFor';
+    const waitFor = async (selectorInput, countInput = 1) => {
+        const { selector, count } = typeof selectorInput === 'object' ?
+            selectorInput :
+            { selector: selectorInput, count: countInput };
+        mark('waitFor', selector, count);
         let counter = 15;
         const countFn = page.$$eval(selector, (els, countValue) => els.length >= countValue, count);
         let found = await countFn;
         while (!found && counter > 0) {
-            counter--;
-            await rambdax_1.delay(200);
+            counter -= 1;
+            await rambdax_1.delay(DELAY);
             found = await countFn;
         }
         return found;
     };
     const waitForSelectors = async (...selectors) => {
-        selectorHolder = `[${selectors.toString()}]`;
-        operationHolder = 'waitForSelectors';
+        mark('waitForSelectors', `[${selectors.toString()}]`);
         const promised = selectors.map(singleSelector => waitFor(singleSelector));
         const result = await Promise.all(promised);
         return !result.includes(false);
     };
     const url = () => {
-        operationHolder = 'url';
+        mark('url', '');
         return page.evaluate(() => window.location.href);
     };
     const focus = (selector) => {
-        operationHolder = 'focus';
+        mark('focus', selector);
         return $(selector, el => el.focus());
     };
     const count = (selector) => {
-        selectorHolder = selector;
-        operationHolder = 'count';
+        mark('count', selector);
         return page.$$eval(selector, els => els.length);
     };
     const exists = (selector) => {
-        selectorHolder = selector;
-        operationHolder = 'exists';
+        mark('exists', selector);
         return page.$$eval(selector, els => els.length > 0);
     };
-    const click = async (selector, index) => {
-        operationHolder = 'click';
+    const click = async (selectorInput, indexInput) => {
+        const { selector, index } = typeof selectorInput === 'object' ?
+            selectorInput :
+            { selector: selectorInput, index: indexInput };
+        mark('click', selector, index);
         if (index === undefined) {
-            const ok = await exists(selector);
-            if (!ok) {
+            if (await exists(selector) === false) {
                 return false;
             }
             await $(selector, el => el.click());
@@ -68,54 +78,68 @@ function attach(page) {
         return $$(selector, clickWhichSelector, index);
     };
     const clickWithText = async (selector, text) => {
-        const ok = await exists(selector);
-        if (!ok) {
+        mark('clickWithText', selector, text);
+        if (await exists(selector) === false) {
             return false;
         }
         return $$(selector, clickWithTextFn, text);
     };
+    const clickWithPartialText = async (selector, text) => {
+        mark('clickWithPartialText', selector, text);
+        if (await exists(selector) === false) {
+            return false;
+        }
+        return $$(selector, clickWithPartialTextFn, text);
+    };
+    const waitAndClick = async (input) => {
+        mark('waitAndClick', input);
+        if (await waitFor(input.selector, input.index + 1) === false) {
+            return false;
+        }
+        return click(input.selector, input.index);
+    };
     const fill = async (selector, text) => {
-        selectorHolder = selector;
-        operationHolder = 'fill';
+        mark('fill', selector, text);
         await focus(selector);
         await page.keyboard.type(text, { delay: 50 });
     };
-    const selectWithTab = async (tabCount) => {
-        for (const _ of Array(tabCount)) {
-            await page.keyboard.press('Tab');
-            await rambdax_1.delay(200);
+    const setInput = async (selector, newValue) => {
+        mark('setInput', selector, newValue);
+        if (await exists(selector) === false) {
+            return false;
         }
-        await page.keyboard.press('ArrowDown');
-        await rambdax_1.delay(200);
-        await page.keyboard.press('Enter');
-        await rambdax_1.delay(200);
+        await page.$eval(selector, setInputFn, newValue);
+        return true;
     };
-    const onError = () => `Latest operation - '${operationHolder}' | Latest selector - '${selectorHolder}'`;
+    const onError = () => {
+        holder.forEach(x => console.log(x));
+    };
     return {
         $$,
         $,
         click,
         clickWithText,
+        clickWithPartialText,
         count,
         exists,
         fill,
         focus,
         onError,
+        page,
         url,
-        selectWithTab,
+        setInput,
         waitFor,
+        waitAndClick,
         waitForSelectors
     };
 }
 exports.attach = attach;
 function clickWhichSelector(els, i) {
-    const convertIndex = (x, length) => {
-        return typeof x === 'number' ?
-            x :
-            x === 'last' ?
-                length - 1 :
-                0;
-    };
+    const convertIndex = (x, length) => typeof x === 'number' ?
+        x :
+        x === 'last' ?
+            length - 1
+            : 0;
     const index = convertIndex(i, els.length);
     if (index >= els.length) {
         return false;
@@ -124,11 +148,22 @@ function clickWhichSelector(els, i) {
     return true;
 }
 function clickWithTextFn(els, text) {
+    const filtered = els.filter(x => x.textContent === text);
+    if (filtered.length === 0) {
+        return false;
+    }
+    filtered[0].click();
+    return true;
+}
+function clickWithPartialTextFn(els, text) {
     const filtered = els.filter(x => x.textContent.includes(text));
     if (filtered.length === 0) {
         return false;
     }
     filtered[0].click();
     return true;
+}
+function setInputFn(el, newValue) {
+    el.value = newValue;
 }
 //# sourceMappingURL=attach.js.map

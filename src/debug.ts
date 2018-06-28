@@ -1,4 +1,4 @@
-import { initPuppeteer } from './'
+import { initPuppeteer, attach } from './'
 // tslint:disable
 const GITHUB = 'https://github.com'
 const WEBPACK = 'http://localhost:8080'
@@ -6,7 +6,8 @@ const ILEARNSMARTER = 'https://ilearnsmarter.com/'
 
 void async function debug() {
   try {
-    var { browser, page, catchError } = await initPuppeteer({
+    console.log('start')
+    var { browser, page: pageRaw, catchError } = await initPuppeteer({
       headless: false,
       logFlag: false,
       screenOnError:'CLOUD',
@@ -16,12 +17,14 @@ void async function debug() {
         waitUntil: 'networkidle2',
       },
     })
-    const x = await page.$$eval('div', els => els.length)
+    const page = attach(pageRaw)
+    // const x = await page.$$eval('div', els => els.length)
     
     await browser.close()
   } catch (e) {
-    e = await catchError(e)
-    console.log(e.screen)
+    console.log(e)
+    // e = await catchError(e)
+    // console.log(e.screen)
   }
 }()
 // tslint:enable

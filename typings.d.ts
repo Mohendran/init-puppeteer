@@ -27,24 +27,31 @@ interface Fn{
 
 type Attach = (page: Page) => AttachOutput
 
+interface Selector{
+  index: number
+  selector: string
+}
+
 interface AttachOutput{
-  $: (selector: string, fn: Function, args?: string[]) => Promise<any>
   $$: (selector: string, fn: Function, args?: string[]) => Promise<any>
+  $: (selector: string, fn: Function, args?: string[]) => Promise<any>
   click: (selector: string, index?: number|string) => Promise<boolean>
+  clickWithPartialText: (selector: string, text: string) => Promise<boolean>
   clickWithText: (selector: string, text: string) => Promise<boolean>
-  focus: (selector: string) => Promise<boolean>
   count: (selector: string) => Promise<number>
   exists: (selector: string) => Promise<boolean>
   fill(selector: string, text: string): void
-  onError: () => string
+  focus: (selector: string) => Promise<boolean>
+  onError: () => void
+  page: Page
   url: () => Promise<string>
-  selectWithTab: (tabCount: number) => Promise<void>
+  setInput: (selector: string, newValue: string) => Promise<boolean>
   waitFor: (selector: string, count?: number) => Promise<boolean>
+  waitAndClick: (input: Selector) => Promise<boolean>
   waitForSelectors: (selectors: string[]) => Promise<boolean>
 }
 
 interface OutputPuppeteer{
-  attach: Attach
   page: Page
   browser: Browser
   catchError: (e: any) => Promise<any>

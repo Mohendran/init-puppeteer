@@ -1,0 +1,10 @@
+import { InputPuppeteer, OutputPuppeteer } from '../typings';
+import { NavigationOptions } from 'puppeteer';
+import { attach as attachModule } from './attach';
+export declare function initPuppeteer(inputRaw: InputPuppeteer | undefined): Promise<OutputPuppeteer>;
+export declare const waitForTimeout: (ms: any) => NavigationOptions;
+export declare const waitForNetwork: NavigationOptions;
+export declare const LONG_TIMEOUT = 60000;
+export declare const SHORT_TIMEOUT = 100;
+export declare const TIMEOUT = 5000;
+export declare const attach: typeof attachModule;

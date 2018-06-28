@@ -7,7 +7,8 @@ const WEBPACK = 'http://localhost:8080';
 const ILEARNSMARTER = 'https://ilearnsmarter.com/';
 void async function debug() {
     try {
-        var { browser, page, catchError } = await _1.initPuppeteer({
+        console.log('start');
+        var { browser, page: pageRaw, catchError } = await _1.initPuppeteer({
             headless: false,
             logFlag: false,
             screenOnError: 'CLOUD',
@@ -17,12 +18,14 @@ void async function debug() {
                 waitUntil: 'networkidle2',
             },
         });
-        const x = await page.$$eval('div', els => els.length);
+        const page = _1.attach(pageRaw);
+        // const x = await page.$$eval('div', els => els.length)
         await browser.close();
     }
     catch (e) {
-        e = await catchError(e);
-        console.log(e.screen);
+        console.log(e);
+        // e = await catchError(e)
+        // console.log(e.screen)
     }
 }();
 // tslint:enable

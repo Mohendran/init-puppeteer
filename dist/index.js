@@ -50,7 +50,7 @@ async function initPuppeteer(inputRaw) {
         const wait = getWait(input.url, input.waitCondition);
         await page.goto(input.url, wait);
         if (input.logFlag) {
-            page.on('console', console.log);
+            page.on('console', log);
         }
         const catchError = async (e) => {
             if (page !== undefined && page.close !== undefined) {
@@ -60,7 +60,6 @@ async function initPuppeteer(inputRaw) {
             return e;
         };
         return {
-            attach: attach_1.attach,
             browser,
             catchError,
             page,
@@ -76,9 +75,15 @@ async function initPuppeteer(inputRaw) {
     }
 }
 exports.initPuppeteer = initPuppeteer;
+function log(input) {
+    if (input._type === 'log') {
+        console.log(input._text);
+    }
+}
 exports.waitForTimeout = common.waitForTimeout;
 exports.waitForNetwork = common.waitForNetwork;
 exports.LONG_TIMEOUT = common.LONG_TIMEOUT;
 exports.SHORT_TIMEOUT = common.SHORT_TIMEOUT;
 exports.TIMEOUT = common.TIMEOUT;
+exports.attach = attach_1.attach;
 //# sourceMappingURL=index.js.map

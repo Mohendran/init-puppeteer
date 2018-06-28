@@ -1,10 +1,11 @@
 import { delay } from 'rambdax'
 import { Page } from 'puppeteer'
+import { AttachOutput } from '../typings'
 
 const STEP_DELAY = Number(process.env.STEP_DELAY || '0')
 const DELAY = 200
 
-export function attach (page: Page) {
+export function attach (page: Page): AttachOutput {
   const holder = []
   const mark = (operation: string, selector: any, additional?: any) => {
     if(holder.length === 10){
@@ -163,24 +164,6 @@ export function attach (page: Page) {
     return true
   }
 
-  const selectWithTab = async (tabCount, arrowToPressInput) => {    
-    const arrowToPress = arrowToPressInput === undefined ? 
-      'ArrowDown' : 
-      `Arrow${arrowToPressInput}`
-
-    mark('selectWithTab', tabCount, arrowToPress)
-      
-    for (const _ of Array(tabCount).fill('')) {
-      await page.keyboard.press('Tab')
-      await delay(DELAY)
-    }
-
-    await page.keyboard.press(arrowToPress)
-    await delay(DELAY)
-    await page.keyboard.press('Enter')
-    await delay(DELAY)
-  }
-
   const onError = () => {
     holder.forEach(x => console.log(x))
   }
@@ -198,7 +181,6 @@ export function attach (page: Page) {
     onError,
     page,
     url,
-    selectWithTab,
     setInput,
     waitFor,
     waitAndClick,

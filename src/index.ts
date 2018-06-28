@@ -14,7 +14,7 @@ import { defaultTo, delay } from 'rambdax'
 import { takeScreenshot } from './modules/takeScreenshot'
 import { init } from './modules/init'
 
-import { attach } from './attach'
+import { attach as attachModule } from './attach'
 
 const defaultURL = 'about:blank'
 const webpackURL = 'http://localhost:8080'
@@ -98,7 +98,6 @@ export async function initPuppeteer(
     }
 
     return {
-      attach,
       browser,
       catchError,
       page,
@@ -126,3 +125,4 @@ export const waitForNetwork = common.waitForNetwork
 export const LONG_TIMEOUT = common.LONG_TIMEOUT
 export const SHORT_TIMEOUT = common.SHORT_TIMEOUT
 export const TIMEOUT = common.TIMEOUT
+export const attach = attachModule
