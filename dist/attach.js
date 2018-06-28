@@ -51,9 +51,10 @@ function attach(page) {
         mark('url', '');
         return page.evaluate(() => window.location.href);
     };
-    const focus = (selector) => {
+    const focus = async (selector) => {
         mark('focus', selector);
-        return $(selector, el => el.focus());
+        await $(selector, el => el.focus());
+        return true;
     };
     const count = (selector) => {
         mark('count', selector);
@@ -75,21 +76,24 @@ function attach(page) {
             await $(selector, el => el.click());
             return true;
         }
-        return $$(selector, clickWhichSelector, index);
+        await $$(selector, clickWhichSelector, index);
+        return true;
     };
     const clickWithText = async (selector, text) => {
         mark('clickWithText', selector, text);
         if (await exists(selector) === false) {
             return false;
         }
-        return $$(selector, clickWithTextFn, text);
+        await $$(selector, clickWithTextFn, text);
+        return true;
     };
     const clickWithPartialText = async (selector, text) => {
         mark('clickWithPartialText', selector, text);
         if (await exists(selector) === false) {
             return false;
         }
-        return $$(selector, clickWithPartialTextFn, text);
+        await $$(selector, clickWithPartialTextFn, text);
+        return true;
     };
     const waitAndClick = async (input) => {
         mark('waitAndClick', input);
